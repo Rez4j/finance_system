@@ -1,0 +1,13 @@
+RewriteEngine On
+
+# 1. Force HTTPS (Recommended for Render)
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 2. Route API calls if the .php extension is missing
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^api/(.*)$ api/$1.php [L]
+
+# 3. Prevent directory browsing for security
+Options -Indexes
